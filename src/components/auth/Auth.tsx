@@ -14,7 +14,13 @@ const Auth = ({children}) => {
     if (children.auth && !user) {
       return <Login />;
     }
-    return children
+    return (
+        <div>
+          <h1>Auth</h1>
+          {children.auth && <Login />}
+          {children}
+        </div>
+        )
 }
 
 export default Auth

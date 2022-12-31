@@ -44,12 +44,12 @@ const useAuth = () => {
     }
   };
   const logout = async () => {
-    localStorage.removeItem("token");
-    setUser(null);
     const {
       data,
       error,
     }: any = await execute("/admin-logout", "POST");
+    localStorage.removeItem("token");
+    setUser(null);
 
     if (data?.data?.status === "ok") {
       console.log("Logout", data);
