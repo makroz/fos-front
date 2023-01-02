@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import config from "../../config";
-import useAuth from "../../hooks/useAuth";
+import { AuthContext } from "../../contexts/AuthProvider";
 import Input from "../forms/Input";
 
 const Login = () => {
-  const { user,error, login } = useAuth();
+  const { user, error, login }: any = useContext(AuthContext);
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const [formState, setFormState] = useState({
@@ -41,21 +41,22 @@ const Login = () => {
       console.log("login", user);
       console.log("====================================");
 
-      if (user||data ) {
+      if (user || data) {
         router.push("/");
       } else {
         const err = error;
-        setErrors({ ...errors, email:err });
+        setErrors({ ...errors, email: err });
         console.log("====================================");
         console.log("Error", errors);
         console.log("====================================");
       }
-      return
+      return;
     });
   };
 
   return (
     <form className="p-2">
+      {JSON.stringify(user)}
       <h1>Welcome to {config.app.appName}!</h1>
       <h2>Please sign-in to your account and start the adventure</h2>
       <br />

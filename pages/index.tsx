@@ -3,9 +3,8 @@ import { useContext } from "react";
 import config from "../src/config";
 import { AuthContext } from "../src/contexts/AuthProvider";
 
-
 const Home = () => {
-  const { user, logout }:any = useContext(AuthContext);
+  const { user, logout }: any = useContext(AuthContext);
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>

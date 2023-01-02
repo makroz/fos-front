@@ -7,7 +7,7 @@ const useAuth = () => {
 
   const getUser = () => {
     let currentUser = null;
-    if (!user){
+    if (!user) {
       console.log("====================================");
       console.log("No user");
       console.log("====================================");
@@ -23,31 +23,29 @@ const useAuth = () => {
   const login = async (credentials: any) => {
     setUser(null);
 
-    const {
-      data,
-      error,
-    }: any = await execute("/admin-login", "POST", credentials);
-    
-    if (data.data.status === "ok") {
+    const { data, error }: any = await execute(
+      "/admin-login",
+      "POST",
+      credentials
+    );
+
+    if (data?.data?.status === "ok") {
       console.log("Loguedo", data);
       setUser(data?.data?.user);
       localStorage.setItem(
         "token",
-        JSON.stringify({ token: data.data.token, user: data.data.user })
+        JSON.stringify({ token: data?.data?.token, user: data?.data?.user })
       );
-      return { user: data.data.user };
+      return { user: data?.data?.user };
     } else {
       console.log("====================================");
       console.log("Error1", data);
       console.log("====================================");
-      return { user, errors: data.data.errors };
+      return { user, errors: data?.data?.errors };
     }
   };
   const logout = async () => {
-    const {
-      data,
-      error,
-    }: any = await execute("/admin-logout", "POST");
+    const { data, error }: any = await execute("/admin-logout", "POST");
     localStorage.removeItem("token");
     setUser(null);
 

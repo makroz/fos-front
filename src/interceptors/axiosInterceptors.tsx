@@ -9,7 +9,10 @@ const axiosInterceptors = (instance) => {
       }
 
       if (apiToken) {
-        config.headers = { Authorization: "Bearer " + apiToken };
+        config.headers = {
+          Authorization: "Bearer " + apiToken,
+          accept: "application/json",
+        };
       }
 
       console.log("Request was sent");
