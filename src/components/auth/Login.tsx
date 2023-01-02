@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import config from "../../config";
-import { AuthContext } from "../../contexts/AuthProvider";
+import useAuth from "../../hooks/useAuth";
 import Input from "../forms/Input";
 
 const Login = () => {
-  const { user, error, login }: any = useContext(AuthContext);
+  const { user, error, login }: any = useAuth();
   const router = useRouter();
   const [errors, setErrors] = useState({});
   const [formState, setFormState] = useState({
@@ -56,7 +56,6 @@ const Login = () => {
 
   return (
     <form className="p-2">
-      {JSON.stringify(user)}
       <h1>Welcome to {config.app.appName}!</h1>
       <h2>Please sign-in to your account and start the adventure</h2>
       <br />
