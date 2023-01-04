@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Drawer from "../src/components/layouts/components/Drawer";
 import config from "../src/config";
 import useAuth from "../src/hooks/useAuth";
 

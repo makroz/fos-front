@@ -23,19 +23,19 @@ export const mainMenu = [
     link: "/setting",
     children: [
       {
-        id: "countries",
-        title: "Countries",
-        link: "/countries",
+        id: "levels",
+        title: "Levels",
+        link: "/levels",
       },
       {
-        id: "states",
-        title: "States",
-        link: "/states",
+        id: "challenges",
+        title: "Challenges",
+        link: "/challenges",
       },
       {
-        id: "cities",
-        title: "Cities",
-        link: "/cities",
+        id: "task",
+        title: "Tasks",
+        link: "/task",
       },
     ],
   },
