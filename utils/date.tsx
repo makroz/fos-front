@@ -1,1 +1,0 @@
-export const getDateStr = (dateStr) => (dateStr + "T").split("T")[0];

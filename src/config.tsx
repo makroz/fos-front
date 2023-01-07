@@ -16,6 +16,7 @@ const config = {
     login: "/admin-login",
     register: "/admin-register",
     logout: "/admin-logout",
+    success: "/",
   },
   layout: {},
 };
