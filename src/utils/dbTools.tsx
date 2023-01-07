@@ -8,32 +8,42 @@ export const getDefaultFormState = (fields: any = {}) => {
   return result;
 };
 
-export const getFields = (campos: any = []) => {
+export const getFields = (campos: any = [], columns: any = null) => {
   let result = {};
   let formSchema = {};
 
   campos.map((key) => {
-    let required = false;
-    let auxN = -1;
-    let auxS = "";
-
-    auxN = key.indexOf("*");
-    if (auxN >= 0) {
-      required = true;
-      key = key.replace("*", "");
-    }
+    let auxN: number = -1;
+    let auxS: string = "";
+    let auxA: any = [];
 
     const field: any = {
-      id: key,
       inputType: "text",
-      label: capitalize(key),
-      required: required,
+      required: false,
       readOnly: false,
       actions: ["add", "edit", "view"],
       className: "",
       rules: "",
       options: [],
     };
+    auxN = key.indexOf("*");
+    if (auxN >= 0) {
+      field.required = true;
+      key = key.replace("*", "");
+    }
+
+    auxN = key.indexOf("|");
+    if (auxN >= 0) {
+      auxA = key.split("|");
+      key = auxA[0];
+      auxA[0] = "";
+      auxA.map((item) => {
+        if (item != "" && item.indexOf(":") > 0) {
+          let auxA2: any = item.split(":");
+          field[auxA2[0]] = auxA2[1];
+        }
+      });
+    }
 
     if (key == "id") {
       field.inputType = "hidden";
@@ -66,10 +76,20 @@ export const getFields = (campos: any = []) => {
     }
     auxN = key.indexOf("_id");
     if (auxN >= 0) {
-      field.label = field.label.substring(0, auxN);
+      if (!field.label) field.label = field.label.substring(0, auxN);
       field.inputType = "select";
     }
 
+    field.id = key;
+    if (columns && columns[key]) {
+      if (columns[key].header) {
+        if (!field.label) field.label = columns[key].header;
+      } else {
+        field.label = capitalize(key);
+        columns[key].header = field.label;
+      }
+    }
+    if (!field.label) field.label = capitalize(key);
     result[key] = field;
     formSchema[key] = "";
   });

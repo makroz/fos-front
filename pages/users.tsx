@@ -5,15 +5,15 @@ import { initialsName } from "../src/utils/string";
 
 const usersPage = () => {
   const status = {
-    A: ["Active", "success"],
-    I: ["Inactive", "danger"],
-    P: ["Pending", "warning"],
-    X: ["Blocked", "grey"],
+    A: ["Activo", "success"],
+    I: ["Inactivo", "danger"],
+    P: ["Pendiente", "warning"],
+    X: ["Bloqueado", "grey"],
   };
 
   const columns = {
     name: {
-      header: "User",
+      header: "Usuario",
       render: (value, row, key, index) => {
         return (
           <Avatar
@@ -35,7 +35,7 @@ const usersPage = () => {
         "whitespace-nowrap text-gray-900 dark:text-white  flex items-start",
     },
     rol: {
-      header: "Role",
+      header: "Rol",
     },
     status: {
       header: "Status",
@@ -51,15 +51,18 @@ const usersPage = () => {
     },
   };
 
-  const fields = getFields([
-    "id",
-    "name*",
-    "email*",
-    "password*",
-    "rol",
-    "status",
-    "created_at",
-  ]);
+  const fields = getFields(
+    [
+      "id",
+      "name*|label:Nombre",
+      "email*",
+      "password*",
+      "rol",
+      "status",
+      "created_at",
+    ],
+    columns
+  );
 
   fields["created_at"].actions = ["view"];
   fields["rol"].readOnly = true;

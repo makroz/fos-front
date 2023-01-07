@@ -26,7 +26,7 @@ const levelsPage = () => {
     },
     status: {
       header: "Status",
-      render: (value, row, key, index) => (
+      render: (value, row) => (
         <Badge
           color={status[row.status] ? status[row.status][1] : ""}
           className="rounded-full  justify-center"
@@ -38,17 +38,14 @@ const levelsPage = () => {
     },
   };
 
-  const fields = getFields([
-    "id",
-    "title*",
-    "description",
-    "colors",
-    "points*|rules:number",
-    "status",
-  ]);
+  const fields = getFields(
+    ["id", "title*", "description", "colors", "points*|rules:number", "status"],
+    columns
+  );
 
   return (
     <>
+      {JSON.stringify(fields)}
       <DataCrud
         title="Nivel"
         modulo="levels"

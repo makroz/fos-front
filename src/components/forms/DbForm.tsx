@@ -25,7 +25,7 @@ const DbForm = ({
                 error={errors}
                 readOnly={readOnly}
                 required={fields[key].required}
-                value={formState[key] || ""}
+                value={formState[key]}
                 onChange={handleChangeInput}
                 options={fields[key].options}
               ></Select>
@@ -41,7 +41,7 @@ const DbForm = ({
               error={errors}
               readOnly={readOnly}
               required={fields[key].required}
-              value={formState[key] || ""}
+              value={formState[key]}
               onChange={handleChangeInput}
             ></Input>
           </div>
