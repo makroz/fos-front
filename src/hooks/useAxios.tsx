@@ -22,8 +22,7 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
   const execute = async (
     _url: any = url,
     _method: any = method,
-    payload: any = {},
-    Act:any=true
+    payload?: any
   ) => {
     setError("");
     setLoaded(false);
@@ -39,11 +38,11 @@ const useAxios = (url: any = null, method = "GET", payload = {}) => {
         method: _method,
         url: _url,
       });
-      if (Act){
+      if (Act) {
         setData(response.data);
       }
       data = response.data;
-    } catch (error: any) {
+    } catch (error) {
       setError(error.message);
     } finally {
       setLoaded(true);
