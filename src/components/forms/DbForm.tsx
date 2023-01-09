@@ -28,6 +28,8 @@ const DbForm = ({
                 value={formState[key]}
                 onChange={handleChangeInput}
                 options={fields[key].options}
+                optionValue={fields[key].optionValue}
+                optionLabel={fields[key].optionLabel}
               ></Select>
             </div>
           );
