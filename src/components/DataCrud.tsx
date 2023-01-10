@@ -7,12 +7,21 @@ import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
 
-const DataCrud = ({ modulo, columns, title = "" }) => {
+const DataCrud = ({
+  modulo,
+  columns,
+  title = "",
+  formState,
+  setFormState,
+  errorsForm,
+  setErrorsForm,
+}) => {
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState]: any = useState(getDefaultFormState(columns));
-  const [errorsForm, setErrorsForm] = useState({});
+  // const [formState, setFormState]: any = useState(getDefaultFormState(columns));
+
+  const [errorForm, setErrorForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
   const [params, setParams] = useState({
@@ -29,6 +38,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
   );
 
   useEffect(() => {
+    setFormState(getDefaultFormState(columns));
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
@@ -93,6 +103,9 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
 
   const handleChangeInput = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+    if (columns[e.target.name].onChange) {
+      columns[e.target.name].onChange(e.target.value, formState, setFormState);
+    }
   };
   const onChangePage = (page) => {
     if (params.page == page) return;
@@ -100,14 +113,17 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
   };
   const onChangePerPage = (perPage) => {
     if (params.perPage == perPage) return;
+    if (!perPage) perPage = -1;
     setParams({ ...params, perPage });
   };
 
   const onSave = (data) => {
     console.log(data);
-    const errors = checkRules();
-    setErrorsForm(errors);
+    const errors = { ...checkRules(), ...errorsForm };
+    setErrorForm(errors);
+    console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
+    console.log("no error");
     let payLoad = {};
     Object.keys(columns).map((key) => {
       if (columns[key].actions.includes(action)) {
@@ -128,22 +144,35 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     setTitleModal("Add " + title);
     setAction("add");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
   const onEdit = (data) => {
     setFormState(data);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
     setTitleModal("Edit " + title);
     setAction("edit");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
   const onView = (data) => {
     setFormState(data);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
     setTitleModal("View " + title);
     setAction("view");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
@@ -182,20 +211,19 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
     <>
       <h1>{title} List</h1>
       <Card className="relative">
-        {!loaded && <Spinner />}
+        <Card>
+          <div className="flex justify-between">
+            <div className="">{!loaded && <Spinner />}</div>
+            <button
+              className="btn btn-primary flex-shrink w-fit"
+              onClick={onAdd}
+            >
+              Add {title}
+            </button>
+          </div>
+        </Card>
         {data && (
           <>
-            <Card>
-              <div className="flex justify-between">
-                <div className=""></div>
-                <button
-                  className="btn btn-primary flex-shrink w-fit"
-                  onClick={onAdd}
-                >
-                  Add {title}
-                </button>
-              </div>
-            </Card>
             <DataTable
               datas={data.data}
               columns={columns}
@@ -219,7 +247,7 @@ const DataCrud = ({ modulo, columns, title = "" }) => {
           formState={formState}
           handleChangeInput={handleChangeInput}
           action={action}
-          errors={errorsForm}
+          errors={{ ...errorForm, ...errorsForm }}
         />
       </DataModal>
       <DataModal
