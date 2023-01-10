@@ -1,7 +1,11 @@
+import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
 const levelsPage = () => {
+  const [formState, setFormState] = useState({});
+  const [errorsForm, setErrorsForm] = useState({});
+
   const fields = getFields([
     "id",
     "title*|Titulo|_h_",
@@ -13,7 +17,15 @@ const levelsPage = () => {
 
   return (
     <>
-      <DataCrud title="Nivel" modulo="levels" columns={fields} />
+      <DataCrud
+        title="Nivel"
+        modulo="levels"
+        columns={fields}
+        formState={formState}
+        setFormState={setFormState}
+        errorsForm={errorsForm}
+        setErrorsForm={setErrorsForm}
+      />
     </>
   );
 };

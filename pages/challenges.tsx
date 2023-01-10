@@ -4,7 +4,13 @@ import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
 
 const challengesPage = () => {
-  const { data, error, loaded } = useAxios("/levels", "GET", {
+  const [formState, setFormState] = useState({});
+  const [errorsForm, setErrorsForm] = useState({});
+
+  const { data, loaded } = useAxios("/levels", "GET", {
+    perPage: -1,
+    sortBy: "id",
+    orderBy: "asc",
     cols: ["id", "title"],
     origen: "useAxios",
   });
@@ -22,19 +28,27 @@ const challengesPage = () => {
     "points*|Puntos|_h_|rules::number",
     "status|_h_",
   ]);
-  if (loaded) {
-    fields.level_id.options = data.data;
-    fields.level_id.optionLabel = "title";
-  }
-  const [field, setField] = useState(fields);
-  useEffect(() => {
-    if (loaded) setField(fields);
-    console.log("loaded", fields);
-  }, [data]);
+
+  fields.level_id.options = data?.data;
+  fields.level_id.optionLabel = "title";
+
+  // const [field, setField] = useState(fields);
+  // useEffect(() => {
+  //   if (loaded) setField(fields);
+  //   console.log("loaded", fields);
+  // }, [data]);
 
   return (
     <>
-      <DataCrud title="Challenges" modulo="challenges" columns={field} />
+      <DataCrud
+        title="Challenges"
+        modulo="challenges"
+        columns={fields}
+        formState={formState}
+        setFormState={setFormState}
+        errorsForm={errorsForm}
+        setErrorsForm={setErrorsForm}
+      />
     </>
   );
 };
