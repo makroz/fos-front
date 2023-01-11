@@ -2,12 +2,10 @@ import { useRef } from "react";
 import { useOnClickOutside } from "../hooks/useOnClickOutside";
 
 const DropDown = (props) => {
-  const container = useRef(null);
+  const container: any = useRef(null);
   useOnClickOutside(container, () => {
-    console.log("useOnClickOutside", props.open);
     props.onOpen(false);
   });
-  console.log("DropDown", props.open);
 
   return (
     <div
