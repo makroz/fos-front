@@ -1,20 +1,30 @@
 import { Card, Spinner } from "flowbite-react";
 import { useEffect, useState } from "react";
 import useAxios from "../hooks/useAxios";
+import useLang from "../hooks/useLang";
 import { getDefaultFormState } from "../utils/dbTools";
 import { capitalize } from "../utils/string";
 import DataModal from "./DataModal";
 import DataTable from "./DataTable";
 import DbForm from "./forms/DbForm";
 
-const DataCrud = ({ modulo, columns, formList, title = "" }) => {
+const DataCrud = ({
+  modulo,
+  columns,
+  title = "",
+  formState,
+  setFormState,
+  errorsForm,
+  setErrorsForm,
+  filter = "",
+}) => {
+  const { t }: any = useLang();
   const [openModal, setOpenModal] = useState(false);
   const [openDel, setOpenDel] = useState(false);
   const [titleModal, setTitleModal] = useState("");
-  const [formState, setFormState]: any = useState(
-    getDefaultFormState(formList)
-  );
-  const [errorsForm, setErrorsForm] = useState({});
+  // const [formState, setFormState]: any = useState(getDefaultFormState(columns));
+
+  const [errorForm, setErrorForm] = useState({});
   const [action, setAction] = useState("view");
   title = capitalize(title || modulo);
   const [params, setParams] = useState({
@@ -22,7 +32,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     perPage: 10,
     sortBy: "id",
     orderBy: "asc",
-    searchBy: "",
+    searchBy: filter,
   });
   const { data, error, loaded, execute, reLoad } = useAxios(
     "/" + modulo,
@@ -31,6 +41,7 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   );
 
   useEffect(() => {
+    setFormState(getDefaultFormState(columns));
     reLoad({ ...params, origen: "reLoad" }, true);
   }, [params]);
 
@@ -44,40 +55,50 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
 
     switch (rule) {
       case "required":
-        return !value ? "is Required" : "";
+        return !value ? t("is Required") : "";
+      case "same":
+        return value != formState[param[0]] ? t("must be the same") : "";
       case "min":
-        return value.length < param[0] ? "min " + param[0] + " characters" : "";
+        return value.length < param[0]
+          ? t("min ") + param[0] + t(" characters")
+          : "";
       case "max":
-        return value.length > param[0] ? "max " + param[0] + " characters" : "";
+        return value.length > param[0]
+          ? t("max ") + param[0] + t(" characters")
+          : "";
       case "email":
-        return !/\S+@\S+\.\S+/.test(value) ? "is not a valid email" : "";
+        return !/\S+@\S+\.\S+/.test(value) ? t("is not a valid email") : "";
       case "number":
-        return !/^\d+$/.test(value) ? "is not a number" : "";
+        return !/^[0-9.,-]+$/.test(value) ? t("is not a valid number") : "";
       case "alpha":
-        return !/^[a-zA-Z]+$/.test(value) ? "is not a valid text" : "";
+        return !/^[a-zA-Z]+$/.test(value) ? t("is not a valid text") : "";
+      case "noSpaces":
+        return !/^\S+$/.test(value) ? t("is not a valid text") : "";
       case "greater":
-        return value < param[0] ? "must be greater than " + param[0] : "";
+        return value < param[0] ? t("must be greater than ") + param[0] : "";
       case "less":
-        return value > param[0] ? "must be less than " + param[0] : "";
+        return value > param[0] ? t("must be less than ") + param[0] : "";
       case "between":
         return value < param[0] || value > param[1]
-          ? "must be between " + param[0] + " and " + param[1]
+          ? t("must be between ") + param[0] + t(" and ") + param[1]
           : "";
       case "regex":
-        return !new RegExp(param[0]).test(value) ? "is not a valid value" : "";
+        return !new RegExp(param[0]).test(value)
+          ? t("is not a valid value")
+          : "";
       default:
         return "";
     }
   };
   const checkRules = () => {
     let errors = {};
-    for (const key in formList) {
-      const el = formList[key];
+    for (const key in columns) {
+      const el = columns[key];
       if (el.actions.includes(action)) {
-        const el = formList[key];
+        const el = columns[key];
 
         if (el.required && !formState[key]) {
-          errors = { ...errors, [key]: el.label + " is Required" };
+          errors = { ...errors, [key]: el.label + t(" is Required") };
         }
         if (el.rules) {
           const rules = (el.rules + "|").split("|");
@@ -95,6 +116,9 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
 
   const handleChangeInput = (e) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
+    if (columns[e.target.name].onChange) {
+      columns[e.target.name].onChange(e.target.value, formState, setFormState);
+    }
   };
   const onChangePage = (page) => {
     if (params.page == page) return;
@@ -102,17 +126,20 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
   };
   const onChangePerPage = (perPage) => {
     if (params.perPage == perPage) return;
+    if (!perPage) perPage = -1;
     setParams({ ...params, perPage });
   };
 
   const onSave = (data) => {
     console.log(data);
-    const errors = checkRules();
-    setErrorsForm(errors);
+    const errors = { ...checkRules(), ...errorsForm };
+    setErrorForm(errors);
+    console.log("error", errors);
     if (Object.keys(errors).length > 0) return;
+    console.log("no error");
     let payLoad = {};
-    Object.keys(formList).map((key) => {
-      if (formList[key].actions.includes(action)) {
+    Object.keys(columns).map((key) => {
+      if (columns[key].actions.includes(action)) {
         payLoad = { ...payLoad, [key]: formState[key] };
       }
     });
@@ -126,32 +153,45 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
     onCloseModal();
   };
   const onAdd = () => {
-    setFormState(getDefaultFormState(formList));
-    setTitleModal("Add " + title);
+    setFormState(getDefaultFormState(columns));
+    setTitleModal(t("Add ") + title);
     setAction("add");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
   const onEdit = (data) => {
     setFormState(data);
-    setTitleModal("Edit " + title);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
+    setTitleModal(t("Edit ") + title);
     setAction("edit");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
   const onView = (data) => {
     setFormState(data);
-    setTitleModal("View " + title);
+    Object.keys(columns).map((key) => {
+      if (columns[key].onChange) {
+        columns[key].onChange(data[key]);
+      }
+    });
+    setTitleModal(t("View ") + title);
     setAction("view");
     setErrorsForm({});
+    setErrorForm({});
     setOpenModal(true);
   };
 
   const onDel = (data, confirmed = false) => {
     setFormState(data);
-    setTitleModal("Delete " + title);
+    setTitleModal(t("Delete ") + title);
     setAction("del");
     setOpenDel(true);
   };
@@ -182,22 +222,22 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
 
   return (
     <>
-      <h1>{title} List</h1>
+      <h1>{t("List", title)}</h1>
       <Card className="relative">
-        {!loaded && <Spinner />}
+        <Card>
+          <div className="flex justify-between">
+            <div className="">{!loaded && <Spinner />}</div>
+            <button
+              className="btn btn-primary flex-shrink w-fit"
+              onClick={onAdd}
+            >
+              {t("Add ")}
+              {title}
+            </button>
+          </div>
+        </Card>
         {data && (
           <>
-            <Card>
-              <div className="flex justify-between">
-                <div className=""></div>
-                <button
-                  className="btn btn-primary flex-shrink w-fit"
-                  onClick={onAdd}
-                >
-                  Add {title}
-                </button>
-              </div>
-            </Card>
             <DataTable
               datas={data.data}
               columns={columns}
@@ -214,14 +254,16 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
-        bottobText={action == "add" ? "Save" : action == "edit" ? "Update" : ""}
+        buttonText={
+          action == "add" ? t("Save") : action == "edit" ? t("Update") : ""
+        }
       >
         <DbForm
-          fields={formList}
+          fields={columns}
           formState={formState}
           handleChangeInput={handleChangeInput}
           action={action}
-          errors={errorsForm}
+          errors={{ ...errorForm, ...errorsForm }}
         />
       </DataModal>
       <DataModal
@@ -229,9 +271,9 @@ const DataCrud = ({ modulo, columns, formList, title = "" }) => {
         title={titleModal}
         onClose={onCloseModal}
         onSave={onSave}
-        bottobText="Delete"
+        buttonText={t("Delete")}
       >
-        <h1>Seguro de eliminar el registro?</h1>
+        <h1>{t("are you sure you want to delete the record?")}</h1>
       </DataModal>
     </>
   );

@@ -58,4 +58,7 @@
   .menuItemNormal {
     @apply text-textMenu;
   }
+  .h90{
+    max-height: 90%;
+  }
 }
