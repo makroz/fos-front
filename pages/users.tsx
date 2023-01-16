@@ -9,7 +9,7 @@ const usersPage = () => {
   const [errorsForm, setErrorsForm] = useState({});
   const fields = getFields([
     "id",
-    "name*|_h_::User",
+    "name*|_h_::Usuario",
     "email*|_h_",
     "password*",
     "rol|Role|_h_",
@@ -41,7 +41,7 @@ const usersPage = () => {
   return (
     <>
       <DataCrud
-        title="User"
+        title="Usuario"
         modulo="users"
         columns={fields}
         formState={formState}

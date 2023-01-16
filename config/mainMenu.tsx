@@ -1,4 +1,4 @@
-import { Home, Users, Circle, Settings } from "react-feather";
+import { Home, Users, Settings } from "react-feather";
 export const mainMenu = [
   {
     id: "dasboard",
@@ -8,7 +8,7 @@ export const mainMenu = [
   },
   {
     id: "users",
-    title: "Users",
+    title: "Usuarios",
     icon: <Users />,
     link: "/users",
   },
@@ -18,13 +18,13 @@ export const mainMenu = [
   },
   {
     id: "setting",
-    title: "Setting",
+    title: "Config",
     icon: <Settings />,
     link: "/setting",
     children: [
       {
         id: "levels",
-        title: "Levels",
+        title: "Niveles",
         link: "/levels",
       },
       {
@@ -34,7 +34,7 @@ export const mainMenu = [
       },
       {
         id: "task",
-        title: "Tasks",
+        title: "Tareas",
         link: "/task",
       },
     ],

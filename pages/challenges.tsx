@@ -32,12 +32,6 @@ const challengesPage = () => {
   fields.level_id.options = data?.data;
   fields.level_id.optionLabel = "title";
 
-  // const [field, setField] = useState(fields);
-  // useEffect(() => {
-  //   if (loaded) setField(fields);
-  //   console.log("loaded", fields);
-  // }, [data]);
-
   return (
     <>
       <DataCrud
