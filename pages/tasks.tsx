@@ -1,25 +1,28 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
-const levelsPage = () => {
+const tasksPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
 
   const fields = getFields([
     "id",
-    "title*|Titulo|_h_",
-    "description|Descripcion|_h_",
-    "colors*|Color|_h_|inputType::color",
-    "points*|Puntos|_h_|rules::number",
+    "challenge_id|Challenge|_h_::Tarea",
+    "member_id|Afiliado|_h_",
+    "level_id|Nivel|_h_",
+    "to_date*|Fecha a Ejecutar|_h_",
+    "executed_date|Fecha Realizada|_h_",
+    "points*|Puntos|rules::number",
+    "meet_link*|Link de la reunion|_h_",
     "status|_h_",
   ]);
 
   return (
     <>
       <DataCrud
-        title="Nivel"
-        modulo="levels"
+        title="Tareas"
+        modulo="tasks"
         columns={fields}
         formState={formState}
         setFormState={setFormState}
@@ -30,5 +33,5 @@ const levelsPage = () => {
   );
 };
 
-export default levelsPage;
-levelsPage.auth = true;
+export default tasksPage;
+tasksPage.auth = true;
