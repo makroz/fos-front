@@ -35,7 +35,7 @@ export const mainMenu = [
       {
         id: "task",
         title: "Tareas",
-        link: "/task",
+        link: "/tasks",
       },
     ],
   },
