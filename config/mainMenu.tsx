@@ -37,6 +37,16 @@ export const mainMenu = [
         title: "Tareas",
         link: "/tasks",
       },
+      {
+        id: "roles",
+        title: "Roles",
+        link: "/roles",
+      },
+      {
+        id: "abilities",
+        title: "Permisos",
+        link: "/abilities",
+      },
     ],
   },
 ];
