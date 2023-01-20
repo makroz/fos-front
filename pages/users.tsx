@@ -12,12 +12,15 @@ const usersPage = () => {
     "name*|_h_::Usuario",
     "email*|_h_",
     "password*",
-    "rol|Role|_h_",
+    "role_id|Rol|_h_",
     "status|_h_",
   ]);
 
-  fields["rol"].readOnly = true;
-  fields["rol"].value = "user";
+  // fields["rol"].readOnly = true;
+  // fields["rol"].value = "user";
+  fields["role_id"].render = (value, row, key, index) => {
+    return "rol...";
+  };
   fields["name"].render = (value, row, key, index) => {
     return (
       <Avatar
