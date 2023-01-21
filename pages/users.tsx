@@ -10,7 +10,7 @@ const usersPage = () => {
   const fields = getFields([
     "id",
     "name*|_h_::Usuario",
-    "email*|_h_",
+    "email*",
     "password*",
     "role_id|Rol|_h_",
     "status|_h_",
@@ -19,7 +19,7 @@ const usersPage = () => {
   // fields["rol"].readOnly = true;
   // fields["rol"].value = "user";
   fields["role_id"].render = (value, row, key, index) => {
-    return "rol...";
+    return row["role"]?.name;
   };
   fields["name"].render = (value, row, key, index) => {
     return (
