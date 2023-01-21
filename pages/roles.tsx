@@ -20,7 +20,7 @@ const roles = () => {
     { label: "Borrar", value: "D" },
   ];
   const fields = getFields([
-    "name*|Nombre del Permiso|_h_|rules::max:10",
+    "name*|Rol|_h_",
     "description|Descripcion|_h_",
     "abilities*|Permisos|_h_|inputType::subSelect|optionsSub::" +
       JSON.stringify(abilitiesL) +

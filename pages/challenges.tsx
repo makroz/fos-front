@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
@@ -12,7 +12,6 @@ const challengesPage = () => {
     sortBy: "id",
     orderBy: "asc",
     cols: ["id", "title"],
-    origen: "useAxios",
   });
 
   const fields: any = getFields([
