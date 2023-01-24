@@ -5,7 +5,7 @@ import useAuth from "../src/hooks/useAuth";
 import fondo from "../public/assets/images/fondo.png";
 
 const Home = () => {
-  const { user, logout }: any = useAuth();
+  const { user }: any = useAuth("dashboard", "R");
   return (
     <div className="flex min-h-full flex-col items-center justify-center py-2">
       <Head>

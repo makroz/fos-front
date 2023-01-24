@@ -22,7 +22,7 @@ const roles = () => {
   const fields = getFields([
     "name*|Rol|_h_",
     "description*|Descripcion|_h_",
-    "abilities*|Permisos|_h_|inputType::subSelect|optionsSub::" +
+    "abilities*|Permisos|inputType::subSelect|optionsSub::" +
       JSON.stringify(abilitiesL),
     "status*|_h_",
   ]);
