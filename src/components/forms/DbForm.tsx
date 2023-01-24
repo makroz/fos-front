@@ -12,7 +12,7 @@ const DbForm = ({
   return (
     <div>
       {Object.keys(fields).map((key) => {
-        if (!fields[key].actions.includes(action)) {
+        if (!fields[key].actions?.includes(action)) {
           return null;
         }
         const readOnly =
