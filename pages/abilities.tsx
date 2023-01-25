@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
-const abilities = () => {
+const abilitiesPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
 
@@ -26,4 +26,5 @@ const abilities = () => {
   );
 };
 
-export default abilities;
+export default abilitiesPage;
+abilitiesPage.auth = true;

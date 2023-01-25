@@ -7,7 +7,7 @@ const challengesPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
 
-  const { data, loaded } = useAxios("/levels", "GET", {
+  const { data } = useAxios("/levels", "GET", {
     perPage: -1,
     sortBy: "id",
     orderBy: "asc",

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import useAxios from "../src/hooks/useAxios";
 import { getFields } from "../src/utils/dbTools";
 
-const roles = () => {
+const rolesPage = () => {
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
   const { data, loaded } = useAxios("/abilities", "GET", {
@@ -45,4 +45,5 @@ const roles = () => {
   );
 };
 
-export default roles;
+export default rolesPage;
+rolesPage.auth = true;

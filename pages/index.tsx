@@ -16,7 +16,9 @@ const Home = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
-        <h1 className="text-6xl font-bold text-primary">Bienvenido</h1>
+        <h1 className="text-6xl font-bold text-primary">
+          Bienvenido {user.name}
+        </h1>
         <Image src={fondo} alt="dashboard" className="m-5" />
       </main>
 

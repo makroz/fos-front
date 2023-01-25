@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import DataCrud from "../src/components/DataCrud";
 import { getFields } from "../src/utils/dbTools";
 
 const tasksPage = () => {
-  const [params, setParams] = useState({
+  const params = {
     relations: "challenge,member,level",
-  });
+  };
 
   const [formState, setFormState] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
