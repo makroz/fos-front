@@ -46,4 +46,3 @@ const rolesPage = () => {
 };
 
 export default rolesPage;
-rolesPage.auth = true;

@@ -5,7 +5,7 @@ import useAuth from "../src/hooks/useAuth";
 import fondo from "../public/assets/images/fondo.png";
 
 const Home = () => {
-  const { user }: any = useAuth("dashboard", "R");
+  const { user }: any = useAuth("home", "R");
   return (
     <div className="flex min-h-full flex-col items-center justify-center py-2">
       <Head>
@@ -30,5 +30,3 @@ const Home = () => {
 };
 
 export default Home;
-
-Home.auth = true;

@@ -48,4 +48,3 @@ const tasksPage = () => {
 };
 
 export default tasksPage;
-tasksPage.auth = true;

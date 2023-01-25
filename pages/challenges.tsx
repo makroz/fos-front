@@ -47,4 +47,3 @@ const challengesPage = () => {
 };
 
 export default challengesPage;
-challengesPage.auth = true;

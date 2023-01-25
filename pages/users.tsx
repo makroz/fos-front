@@ -64,4 +64,3 @@ const usersPage = () => {
 };
 
 export default usersPage;
-usersPage.auth = true;

@@ -27,4 +27,3 @@ const abilitiesPage = () => {
 };
 
 export default abilitiesPage;
-abilitiesPage.auth = true;

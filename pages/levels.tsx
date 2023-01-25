@@ -31,4 +31,3 @@ const levelsPage = () => {
 };
 
 export default levelsPage;
-levelsPage.auth = true;

@@ -1,7 +1,7 @@
 import { Home, Users, Settings } from "react-feather";
 export const mainMenu = [
   {
-    id: "dasboard",
+    id: "home",
     title: "Dashboard",
     icon: <Home />,
     link: "/",
@@ -19,8 +19,8 @@ export const mainMenu = [
     type: "separator",
   },
   {
-    id: "setting",
-    title: "Config",
+    id: "settings",
+    title: "Configuriones",
     icon: <Settings />,
     link: "/setting",
     ability: "R",
@@ -38,7 +38,7 @@ export const mainMenu = [
         ability: "R",
       },
       {
-        id: "task",
+        id: "tasks",
         title: "Tareas",
         link: "/tasks",
         ability: "R",
