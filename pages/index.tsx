@@ -51,6 +51,7 @@ const Home = () => {
     execute("tasks-today/" + taskActive.challenge_id, "POST", {
       meet_link,
       to_date: taskActive.to_date,
+      cant: taskActive.cant,
     });
     reLoad();
   };
@@ -63,7 +64,7 @@ const Home = () => {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex w-full flex-1 flex-col items-center justify-center px-20 text-center">
+      <main className="flex w-full flex-1 flex-col items-center justify-center p-0 text-center">
         <h1 className="text-6xl font-bold text-primary">Bienvenido</h1>
         {userCan("home_adm", "R") && (
           <>
@@ -89,6 +90,14 @@ const Home = () => {
                   >
                     {task.to_date}
                   </div>
+                  {task.live && (
+                    <div className="text-xs text-yellow-500">
+                      open: {task.live.open_date}
+                      <div className="text-black">
+                        instructor: {task.live.user.name}
+                      </div>
+                    </div>
+                  )}
                   <hr />
                   <h1>{task.challenge.name}</h1>
                   {task.challenge.description}
@@ -97,7 +106,7 @@ const Home = () => {
                     <Users size="22px" />
                     {task.cant}
                   </div>
-                  {!task.meet_link ? (
+                  {!task.live?.meet_link ? (
                     <div
                       className="btn btn-primary"
                       onClick={(e) => onOpenModal(task)}
@@ -106,7 +115,7 @@ const Home = () => {
                     </div>
                   ) : (
                     <div>
-                      {task.meet_link}
+                      {task.live.meet_link}
                       <hr />
                       <div className="btn btn-primary my-2">Ir a la Sala</div>
                       <div className="btn btn-secondary">Cerrar Sala</div>
@@ -135,7 +144,7 @@ const Home = () => {
         )}
       </main>
 
-      <footer className="flex h-24 w-full items-center justify-center border-t">
+      <footer className="flex h-12 w-full items-center justify-center border-t mt-6 ">
         Copyrigth {new Date().getFullYear()} - {config.app.appName}
       </footer>
     </div>
