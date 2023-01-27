@@ -39,7 +39,7 @@ const Home = () => {
 
     return errors;
   };
-  const onSave = () => {
+  const onSave = async () => {
     console.log(meet_link);
     setErrors({});
     const errors = validate();
@@ -48,11 +48,16 @@ const Home = () => {
       return;
     }
     setOpenModal(false);
-    execute("tasks-today/" + taskActive.challenge_id, "POST", {
+    await execute("tasks-today/" + taskActive.challenge_id, "POST", {
       meet_link,
       to_date: taskActive.to_date,
       cant: taskActive.cant,
     });
+    reLoad();
+  };
+
+  const closeTask = async (task: any) => {
+    await execute("lives-close/" + task.live.id, "POST");
     reLoad();
   };
 
@@ -91,8 +96,15 @@ const Home = () => {
                     {task.to_date}
                   </div>
                   {task.live && (
-                    <div className="text-xs text-yellow-500">
-                      open: {task.live.open_date}
+                    <div className=" m-0 pb-2 text-xs self-center flex flex-col text-yellow-500">
+                      <div className="flex justify-between gap-2">
+                        <div>Abierta:</div> {task.live.open_date}
+                      </div>
+                      {task.live.close_date && (
+                        <div className="flex justify-between gap-2">
+                          <div>Cerrada:</div> {task.live.close_date}
+                        </div>
+                      )}
                       <div className="text-black">
                         instructor: {task.live.user.name}
                       </div>
@@ -104,7 +116,7 @@ const Home = () => {
                   <hr />
                   <div className="m-2 flex justify-center gap-2 text-gray-500">
                     <Users size="22px" />
-                    {task.cant}
+                    {task.live?.close_date ? task.live.cant : task.cant}
                   </div>
                   {!task.live?.meet_link ? (
                     <div
@@ -113,14 +125,23 @@ const Home = () => {
                     >
                       Habilitar Sala
                     </div>
-                  ) : (
+                  ) : !task.live?.close_date ? (
                     <div>
                       {task.live.meet_link}
                       <hr />
-                      <div className="btn btn-primary my-2">Ir a la Sala</div>
-                      <div className="btn btn-secondary">Cerrar Sala</div>
+                      <div className="btn btn-primary my-2">
+                        <a target="_blank" href={task.live?.meet_link || null}>
+                          Entrar a la Sala
+                        </a>
+                      </div>
+                      <div
+                        className="btn btn-secondary"
+                        onClick={() => closeTask(task)}
+                      >
+                        Cerrar Sala
+                      </div>
                     </div>
-                  )}
+                  ) : null}
                   <DataModal
                     open={openModal}
                     title="Habilitar Sala"
