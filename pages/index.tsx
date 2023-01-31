@@ -77,7 +77,8 @@ const Home = () => {
             <Image src={fondo} alt="dashboard" className="m-5" />
           </>
         )}
-        {userCan("home_ins", "R") && (
+
+        {userCan("home_ins", "R") && user.role_id != 1 && (
           <>
             <h2 className="text-primary">Instructor {user.name}</h2>
             Sesiones para Hoy: <br />

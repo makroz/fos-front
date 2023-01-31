@@ -1,6 +1,6 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { Fragment, useState } from "react";
-import { ChevronDown, ChevronUp, Edit, Eye, Trash } from "react-feather";
+import { Fragment, useEffect, useState } from "react";
+import { ChevronDown, Edit, Eye, Trash } from "react-feather";
 import t from "../utils/traductor";
 import Select from "./forms/Select";
 
@@ -13,7 +13,6 @@ const DataTable = ({
   onAction,
   onClickRowChildren,
   onChangeSort,
-  //_sel = true,
 }): any => {
   const [sel, setSel]: any = useState([]);
   const [rowChildren, setRowChildren]: any = useState({});
@@ -65,6 +64,10 @@ const DataTable = ({
             ? columns[key].options[row[key]][columns[key].optionLabel] ||
                 columns[key].options[row[key]]?.label
             : "....";
+        } else {
+          const k = key.indexOf("_id") > -1 ? key.replace("_id", "") : "";
+          if (k != "" && row[k] && row[k][columns[key].optionLabel || "name"])
+            return row[k][columns[key].optionLabel || "name"];
         }
         return "...";
         break;
