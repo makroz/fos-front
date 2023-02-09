@@ -1,4 +1,4 @@
-import LoginBasic from "../src/components/auth/LoginBasic";
+import LoginBasic from "../components/auth/LoginBasic";
 
 const loginPage = () => {
   return <LoginBasic />;
