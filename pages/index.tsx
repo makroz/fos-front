@@ -48,7 +48,7 @@ const Home = () => {
       return;
     }
     setOpenModal(false);
-    await execute("tasks-today/" + taskActive.challenge_id, "POST", {
+    await execute("lives-open/" + taskActive.challenge_id, "POST", {
       meet_link,
       to_date: taskActive.to_date,
       cant: taskActive.cant,

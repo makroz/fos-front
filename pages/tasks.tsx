@@ -22,11 +22,10 @@ const tasksPage = () => {
     "status|_h_",
   ]);
 
-  fields["level_id"].render = (value, row, key, index) => row.level.title;
-  fields["challenge_id"].render = (value, row, key, index) =>
-    row.challenge.name;
-  fields["member_id"].render = (value, row, key, index) => row.member.name;
-  fields["_actions"].render = (value, row, index) => {
+  fields["level_id"].render = ({ row }) => row.level.title;
+  fields["challenge_id"].render = ({ row }) => row.challenge.name;
+  fields["member_id"].render = ({ row }) => row.member.name;
+  fields["_actions"].render = ({ value }) => {
     if (value == "del" || value == "add") return false;
     return true;
   };
